@@ -1,0 +1,16 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+{% include 'snippets/header.html' %}
+
+<body class="antialiased">
+    <div class="page">
+        {% block content %} {% endblock content %}
+    </div>
+</body>
+
+{% include 'snippets/footer.html' %}
+
+</html>

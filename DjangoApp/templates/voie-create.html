@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Simple ERP{% endblock %}</title>
+    <style type="text/css">
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+    li {
+      float: left;
+    }
+    
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
+    li a:hover {
+      background-color: #111;
+    }
+      .errorlist {
+        margin: 0;
+        padding: 0;
+      }
+      .errorlist li {
+        list-style: none;
+        font-size: 90%;
+        color: red;
+      }
+      .errorlist ~ input,
+      .errorlist ~ select {
+        border-color: red;
+      }
+    </style>
+  </head>
+<!doctype html>
+<html lang="en-us">
+<body>
+    <h1>Voirie</h1>
+    <ul>
+     <li><a class="active" href="{% url 'voie_add' %} " id=voirie>Voie</a></li>
+    </ul>
+
+    <hr>
+</body>
+</html>
+  
+
+  <form method="post" id="VoirieForm" 
+  data-cities-url="{% url 'Demo:load_cities' %}" 
+  data-voies-url="{% url 'Demo:load_voies' %}">
+    {% csrf_token %}
+    <table>
+    
+
+    
+      <tr>  
+       <th> Région : </th>
+       <td> {{form.region}} </td>
+        </tr>
+        <tr>   
+       <th> Ville : </th>
+       <td> {{form.city}}</td>
+        </tr>
+      
+        <tr>    
+       <th> Voie : </th>
+       <td>{{form.name}} <td>
+        </tr>
+       
+    </table>
+    
+     <br>
+       <br>
+
+    
+      <button type="submit">Suivant</button>
+  </form>
+  
+   <br>
+       <br>
+        <br>
+       <br>
+  
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+   
+    
+    $("#id_region").change(
+    function () {
+      var url = $("#VoirieForm").attr("data-cities-url");
+      var regionId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'region': regionId
+        },
+        success: function (data) {
+          $("#id_city").html(data);
+        }
+      });
+
+    });
+    
+    $("#id_city").change(
+    function () {
+      var url = $("#VoirieForm").attr("data-operations-url");
+      var cityId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'city': cityId
+        },
+        success: function (data) {
+          $("#id_operation").html(data);
+        }
+      });
+
+    });
+    
+  </script>
+  
+  <a href="{% url 'logout' %}">Se déconnecter</a>
+  
+{% else %}
+
+<!doctype html>
+    <html lang="en-us">
+      <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+        li {
+          float: left;
+        }
+        
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        li a:hover {
+          background-color: #111;
+        }
+          .errorlist {
+            margin: 0;
+            padding: 0;
+          }
+          .errorlist li {
+            list-style: none;
+            font-size: 90%;
+            color: red;
+          }
+          .errorlist ~ input,
+          .errorlist ~ select {
+            border-color: red;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Simple ERP</h1>
+        <ul>
+          <li><a class="active" href="{% url 'accounts:signup'%}">Sign up</a></li>
+          <li><a href="{% url 'login'%}">Log In</a></li>
+	  <li><a href="{% url 'admin:index' %}">Admin account</a></li>
+        </ul>
+    
+        <hr>
+      </body>
+</html>
+
+ <p>Vous êtes maintenant déconnecté</p>
+  <a href="{% url 'login' %}">Se connecter</a>
+  
+{% endif %}
+{% endblock %}

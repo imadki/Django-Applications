@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block content %}
+<div class="flex-fill d-flex flex-column justify-content-center">
+    <div class="container-tight py-6">
+
+        <form class='create-form' method="post">{% csrf_token %}
+            <div class="card-body">
+                <h2 class="mb-5 text-center">Create new account</h2>
+                <div class="mb-3">
+                    <label class="form-label" for="id_last_name">Last-name</label>
+                    <input type="text" class="form-control" name="last_name" id="id_last_name" placeholder="Your last name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="id_first_name">First-name</label>
+                    <input type="text" class="form-control" name="first_name" id="id_first_name" placeholder="Your first name">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_username">Username</label>
+                    <input type="text" class="form-control" name="username" id="id_username" placeholder="Your  username">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="id_email">Email address</label>
+                    <input type="email" class="form-control" name="email" id="id_email" placeholder="Enter email">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="id_password1">Password</label>
+                    <input type="password" class="form-control" name="password1" id="id_password1" placeholder="Enter password">
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password2" id="id_password2" placeholder="Enter password again">
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="submit-button btn btn-primary btn-block">
+                       Create new account
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="text-center text-muted">
+            Already have account? <a href="{% url 'accounts:login' %}" tabindex="-1">Sign in</a>
+        </div>
+        {% for field in registration_form %}
+        <p>
+            {% for error in field.errors %}
+            <p style="color: red">{{field.name}}: {{ error }}</p>
+            {% endfor %}
+        </p>
+        {% endfor %} {% if registration_form.non_field_errors %}
+        <div style="color: red">
+            <p>{{registration_form.non_field_errors}}</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+    document.body.style.display = "block"
+</script>
+{% endblock content %}

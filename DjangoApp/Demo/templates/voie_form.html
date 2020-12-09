@@ -1,0 +1,189 @@
+{% block content %}
+
+{% if user.is_authenticated %}
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Simple ERP{% endblock %}</title>
+    <style type="text/css">
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+    li {
+      float: left;
+    }
+    
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
+    li a:hover {
+      background-color: #111;
+    }
+      .errorlist {
+        margin: 0;
+        padding: 0;
+      }
+      .errorlist li {
+        list-style: none;
+        font-size: 90%;
+        color: red;
+      }
+      .errorlist ~ input,
+      .errorlist ~ select {
+        border-color: red;
+      }
+    </style>
+  </head>
+<!doctype html>
+<html lang="en-us">
+<body>
+    <h1>Simple ERP</h1>
+    <ul>
+      <li><a class="active" id=Voirie>Voirie</a></li>
+      <li><a>Espace Vert</a></li>
+      <li><a>Espace Vert</a></li>
+      <li><a>Placette / Place</a></li>
+      <li><a>Carrefour</a></li>
+    </ul>
+
+    <Demo>
+</body>
+</html>
+  
+
+  <form method="post" id="VoirieForm" 
+  data-cities-url="{% url 'Demo:load_cities' %}" 
+  data-operations-url="{% url 'Demo:load_operations' %}" 
+  data-interventions-url="{% url 'Demo:load_interventions' %}" 
+  data-matieres-url="{% url 'Demo:load_matieres' %}"  
+  novalidate>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+      <button type="submit">Save</button>
+      <a href="{% url 'voirie_changelist' %}">Nevermind</a>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+   
+    
+    $("#id_region").change(
+    function () {
+      var url = $("#VoirieForm").attr("data-cities-url");
+      var regionId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'region': regionId
+        },
+        success: function (data) {
+          $("#id_city").html(data);
+        }
+      });
+
+    });
+    
+     $("#id_city").change(
+    function () {
+      var url = $("#VoirieForm").attr("data-operations-url");
+      var cityId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'city': cityId
+        },
+        success: function (data) {
+          $("#id_operation").html(data);
+        }
+      });
+
+    });
+    
+
+    $("#id_chaussee").change(
+    function () {
+      var url = $("#VoirieForm").attr("data-matieres-url");
+      var chausseeId = $('#id_chaussee').val();
+
+      $.ajax({
+        url: url,
+        data: {'chaussee': chausseeId},
+        success: function (data) {
+          $("#id_matiere").html(data);
+        }
+      });
+
+    });
+  </script>
+  
+{% else %}
+
+<!doctype html>
+    <html lang="en-us">
+      <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+        li {
+          float: left;
+        }
+        
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        li a:hover {
+          background-color: #111;
+        }
+          .errorlist {
+            margin: 0;
+            padding: 0;
+          }
+          .errorlist li {
+            list-style: none;
+            font-size: 90%;
+            color: red;
+          }
+          .errorlist ~ input,
+          .errorlist ~ select {
+            border-color: red;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Simple ERP</h1>
+        <ul>
+          <li><a class="active" href="{% url 'accounts:signup'%}">Sign up</a></li>
+          <li><a href="{% url 'login'%}">Log In</a></li>
+        </ul>
+    
+        <Demo>
+      </body>
+</html>
+
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

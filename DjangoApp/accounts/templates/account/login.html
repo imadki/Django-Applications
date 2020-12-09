@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% block content %}
+<div class="flex-fill d-flex flex-column justify-content-center">
+    <div class="container-tight py-6">
+        <form class='create-form' method="post">{% csrf_token %}
+            <div class="card-body">
+                <h2 class="mb-5 text-center">Login to your account</h2>
+                <div class="mb-3">
+                    <label class="form-label" for="id_email">Email address</label>
+                    <input type="email" class="form-control" name="email" id="id_email" placeholder="Enter email">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="id_password">Password</label>
+                    <input type="password" class="form-control" name="password" id="id_password" placeholder="Enter password">
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="submit-button btn btn-primary btn-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Sign in
+                  </button>
+                </div>
+            </div>
+        </form>
+        <div class="text-center text-muted">
+            Don't have account yet? <a href="{% url 'accounts:register' %}" tabindex="-1">Sign up</a>
+        </div>
+    </div>
+    {% for field in registration_form %}
+    <p>
+        {% for error in field.errors %}
+        <p style="color: red">{{field.name}}: {{ error }}</p>
+        {% endfor %}
+    </p>
+    {% endfor %} {% if registration_form.non_field_errors %}
+    <div style="color: red">
+        <p>{{registration_form.non_field_errors}}</p>
+    </div>
+    {% endif %}
+</div>
+<!-- Libs JS -->
+<script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Tabler Core -->
+<script src="./dist/js/tabler.min.js"></script>
+<script>
+    document.body.style.display = "block"
+</script>
+{% endblock content %}
